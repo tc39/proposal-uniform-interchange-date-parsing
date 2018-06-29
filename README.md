@@ -79,41 +79,41 @@ Ordered into sequential suggestions (expecting the later ones to be increasingly
 
 1. Use correct vocabulary for sign-prefixed years ("expanded", not "extended") and be specific about basing the ECMAScript format upon ISO 8601 _calendar date_ formats (in contrast with YYYY-DDD _ordinal date_ and YYYY-Www-D _week date_ formats).
 Reject input that does not match the intersection of ISO 8601 and the currently-documented ECMAScript Date Time String Format.
-* If <var>yearish</var> is sign-prefixed but has a digit count other than six, return `NaN`.
-* If <var>monthish</var> is present but not 01 through 12, return `NaN`.
-* If <var>dayish</var> is present but equals 00 or exceeds the number of days in the given month and year, return `NaN`.
-* If <var>hourish</var> exceeds 23, return `NaN` (breaking current acceptance of "…T24:00:00", but see below).
-* If <var>minuteish</var> exceeds 59, return `NaN`.
-* If <var>secondish</var> exceeds 59, return `NaN`.
-* If <var>fraction</var> contains a comma, return `NaN`.
-* If <var>fraction</var> is present but does not have exactly three digits, return `NaN`.
-* If <var>offsetish</var> is present without a time component, return `NaN`.
-* If <var>offsetish</var> hour exceeds 23 or minute exceeds 59, return `NaN`.
-* If the input contains a lowercase letter, return `NaN`.
+   * If <var>yearish</var> is sign-prefixed but has a digit count other than six, return `NaN`.
+   * If <var>monthish</var> is present but not 01 through 12, return `NaN`.
+   * If <var>dayish</var> is present but equals 00 or exceeds the number of days in the given month and year, return `NaN`.
+   * If <var>hourish</var> exceeds 23, return `NaN` (breaking current acceptance of "…T24:00:00", but see below).
+   * If <var>minuteish</var> exceeds 59, return `NaN`.
+   * If <var>secondish</var> exceeds 59, return `NaN`.
+   * If <var>fraction</var> contains a comma, return `NaN`.
+   * If <var>fraction</var> is present but does not have exactly three digits, return `NaN`.
+   * If <var>offsetish</var> is present without a time component, return `NaN`.
+   * If <var>offsetish</var> hour exceeds 23 or minute exceeds 59, return `NaN`.
+   * If the input contains a lowercase letter, return `NaN`.
 
 2. Add allowances for reasonable and/or backwards-compatible input acceptance.
-* If <var>hourish</var> is 24 and <var>minuteish</var> is 00 and <var>secondish</var> is 00, allow interpretation as an "end of day" midnight (restoring acceptance of "…T24:00:00") and update the text to indicate that such input is technically invalid ISO 8601.
-* If <var>fraction</var> is present and has fewer than three digits, act as if the missing rightmost digits were 0.
-* If <var>fraction</var> has more than three digits, allow implementations to accept it but do not specify the effect of excess digits.
-* If <var>yearish</var> is sign-prefixed and has at least four digits but no more than six after stripping leading zeroes, act as if it had exactly six digits.
-* Interpret lowercase letters as uppercase
-  * [ISO 8601-1 §3.4.1](https://www.loc.gov/standards/datetime/iso-tc154-wg5_n0038_iso_wd_8601-1_2016-02-16.pdf#page=18): "_In date and time representations lower case characters may be used when upper case characters are not available._"
+   * If <var>hourish</var> is 24 and <var>minuteish</var> is 00 and <var>secondish</var> is 00, allow interpretation as an "end of day" midnight (restoring acceptance of "…T24:00:00") and update the text to indicate that such input is technically invalid ISO 8601.
+   * If <var>fraction</var> is present and has fewer than three digits, act as if the missing rightmost digits were 0.
+   * If <var>fraction</var> has more than three digits, allow implementations to accept it but do not specify the effect of excess digits.
+   * If <var>yearish</var> is sign-prefixed and has at least four digits but no more than six after stripping leading zeroes, act as if it had exactly six digits.
+   * Interpret lowercase letters as uppercase
+     * [ISO 8601-1 §3.4.1](https://www.loc.gov/standards/datetime/iso-tc154-wg5_n0038_iso_wd_8601-1_2016-02-16.pdf#page=18): "_In date and time representations lower case characters may be used when upper case characters are not available._"
 
 3. Loosen the similarity requirement to require rejection of more input, including more input that is valid ISO 8601 calendar date/date-time but does not match the ECMAScript Date Time String Format.
-* Allow both flavors of <var>yearish</var> to have four or more digits (e.g., `(?<yearish> [0-9]{4,} | [+-][0-9]{4,} )`) and return `NaN` if <var>yearish</var> has more than four but is not sign-prefixed.
-* Allow a space or tab character in place of time designator "T" (e.g., `[T\x20\t]`, and return `NaN` in such cases.
-* Allow <var>fraction</var> to match a decimal sign (dot or comma) with no digits (e.g., `(?<fraction> [.,][0-9]* )`), and return `NaN` if it does so.
-* Allow <var>fraction</var> to match a partial minute or partial hour (e.g., `T(?<hourish> [0-9]{2} )((?<hourFraction> [.,][0-9]+ )? | :(?<minuteish> [0-9]{2} )(:(?<secondish> [0-9]{2} ))?(?<fraction> [.,][0-9]+ )?)`), and return `NaN` if it does so.
-* Allow <var>offsetish</var> without a minutes component (e.g., `(?<offsetish> Z | [+-][0-9]{2}(:[0-9]{2})? )`), and return `NaN` in such cases.
+   * Allow both flavors of <var>yearish</var> to have four or more digits (e.g., `(?<yearish> [0-9]{4,} | [+-][0-9]{4,} )`) and return `NaN` if <var>yearish</var> has more than four but is not sign-prefixed.
+   * Allow a space or tab character in place of time designator "T" (e.g., `[T\x20\t]`, and return `NaN` in such cases.
+   * Allow <var>fraction</var> to match a decimal sign (dot or comma) with no digits (e.g., `(?<fraction> [.,][0-9]* )`), and return `NaN` if it does so.
+   * Allow <var>fraction</var> to match a partial minute or partial hour (e.g., `T(?<hourish> [0-9]{2} )((?<hourFraction> [.,][0-9]+ )? | :(?<minuteish> [0-9]{2} )(:(?<secondish> [0-9]{2} ))?(?<fraction> [.,][0-9]+ )?)`), and return `NaN` if it does so.
+   * Allow <var>offsetish</var> without a minutes component (e.g., `(?<offsetish> Z | [+-][0-9]{2}(:[0-9]{2})? )`), and return `NaN` in such cases.
 
 4. Accept more input that is invalid ECMAScript Date Time String Format but is potentially valid ISO 8601.
-* If <var>yearish</var> is sign-prefixed and has more than six digits but specifies an in-range year, act as if it had exactly six digits.
-* If the time designator is a space or tab, act as if it were a "T".
-  * [ISO 8601-1 §4.3.2](https://www.loc.gov/standards/datetime/iso-tc154-wg5_n0038_iso_wd_8601-1_2016-02-16.pdf#page=27): "_By mutual agreement of the partners in information interchange, the character [T] may be omitted in applications where there is no risk of confusing a date and time of day representation with others defined in this International Standard._"
-* If <var>offsetish</var> has no minutes component, act as if the minutes component were 00.
-  * [ISO 8601-1 §4.2.5.1](https://www.loc.gov/standards/datetime/iso-tc154-wg5_n0038_iso_wd_8601-1_2016-02-16.pdf#page=25): "_When it is required to indicate the difference between local time and UTC of day, the representation of the difference can be expressed in hours and minutes, or hours only._"
-* If <var>fraction</var> contains a comma, act as if it were a dot.
-  * [ISO 8601-1 §4.2.2.4](https://www.loc.gov/standards/datetime/iso-tc154-wg5_n0038_iso_wd_8601-1_2016-02-16.pdf#page=24): "_the decimal fraction shall be divided from the integer part by the decimal sign specified in ISO 31-0, i.e. the comma [,] or full stop [.]._"
+   * If <var>yearish</var> is sign-prefixed and has more than six digits but specifies an in-range year, act as if it had exactly six digits.
+   * If the time designator is a space or tab, act as if it were a "T".
+     * [ISO 8601-1 §4.3.2](https://www.loc.gov/standards/datetime/iso-tc154-wg5_n0038_iso_wd_8601-1_2016-02-16.pdf#page=27): "_By mutual agreement of the partners in information interchange, the character [T] may be omitted in applications where there is no risk of confusing a date and time of day representation with others defined in this International Standard._"
+   * If <var>offsetish</var> has no minutes component, act as if the minutes component were 00.
+     * [ISO 8601-1 §4.2.5.1](https://www.loc.gov/standards/datetime/iso-tc154-wg5_n0038_iso_wd_8601-1_2016-02-16.pdf#page=25): "_When it is required to indicate the difference between local time and UTC of day, the representation of the difference can be expressed in hours and minutes, or hours only._"
+   * If <var>fraction</var> contains a comma, act as if it were a dot.
+      * [ISO 8601-1 §4.2.2.4](https://www.loc.gov/standards/datetime/iso-tc154-wg5_n0038_iso_wd_8601-1_2016-02-16.pdf#page=24): "_the decimal fraction shall be divided from the integer part by the decimal sign specified in ISO 31-0, i.e. the comma [,] or full stop [.]._"
 
 ### Other potential extensions
 * Accept unsigned long years.
