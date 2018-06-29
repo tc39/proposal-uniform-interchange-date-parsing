@@ -115,6 +115,11 @@ Reject input that does not match the intersection of ISO 8601 and the currently-
 * If <var>fraction</var> contains a comma, act as if it were a dot.
   * [ISO 8601-1 §4.2.2.4](https://www.loc.gov/standards/datetime/iso-tc154-wg5_n0038_iso_wd_8601-1_2016-02-16.pdf#page=24): "_the decimal fraction shall be divided from the integer part by the decimal sign specified in ISO 31-0, i.e. the comma [,] or full stop [.]._"
 
+### Other potential extensions
+* Accept unsigned long years.
+* Accept fractional minutes or hours.
+* Specify uniform treatment for non-"Z" character time zone offsets.
+
 ## Discussion
 ### Backwards Compatibility
 This is by design an area of wide variance between implementations, but none of the proposed changes would require any input that is currently accepted by all of them to start being rejected.
