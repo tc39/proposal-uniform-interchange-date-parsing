@@ -1,6 +1,6 @@
 # Uniform parsing of quasi-standard Date.parse input
 
-A proposal to standardize `Date.parse` behavior for input that is sufficiently similar to the ISO 8601-based [ECMAScript Date Time String Format](https://tc39.github.io/ecma262/#sec-date-time-string-format).
+A proposal to standardize `Date.parse` behavior for a broader range of input, accepting slightly more ISO 8601 calendar date-times and rejecting out-of-bounds field values and/or combinations while still allowing implementation-defined fallbacks for _other_ input.
 
 ## Status
 This proposal is at stage 0 of [the TC39 Process](https://tc39.github.io/process-document/).
@@ -9,7 +9,7 @@ This proposal is at stage 0 of [the TC39 Process](https://tc39.github.io/process
 None yet.
 
 ## Motivation
-[`Date.parse`](https://tc39.github.io/ecma262/#sec-date.parse) specifies an initial attempt to parse input as an [ECMAScript Date Time String](https://tc39.github.io/ecma262/#sec-date-time-string-format), but all input that does not strictly conform is allowed to fall back to implementation-specific behavior—even if the input divergence was almost certainly unintentional.
+[`Date.parse`](https://tc39.github.io/ecma262/#sec-date.parse) specifies an initial attempt to parse input as a [ <strong>±<em>YY</em></strong> ] <strong><em>YYYY</em></strong> [ <strong>-<em>MM</em></strong> [ <strong>-<em>DD</em></strong> ] ] [ <strong>T<em>HH</em>:<em>mm</em></strong> [ <strong>:<em>ss</em></strong> [ <strong>.<em>sss</em></strong> ] ] [ <strong><em>Z</em></strong> ] ] [ECMAScript Date Time String](https://tc39.github.io/ecma262/#sec-date-time-string-format) (that "interchange format" being essentially a limited profile of ISO 8601 extended format calendar date-times), but all input that does not strictly conform is allowed to fall back to implementation-specific behavior—even if the input divergence was out-of-bounds field values/combinations/etc. and the user intent was almost certainly implementation-agnostic processing.
 As a result, implementations differ in their treatment of such "not-quite right" input in ways that they should not.
 Behavior can be explored at https://output.jsbin.com/sujuduraci#test-cases , but here is a summary:
 * Chrome, Edge, and Safari accept signed years with the wrong digit count (e.g., "+2018-06-29" and "+0002018-06-29").
@@ -25,7 +25,9 @@ Behavior can be explored at https://output.jsbin.com/sujuduraci#test-cases , but
 * Chrome, Edge, Firefox, and Safari accept too few or too many fractional second digits (e.g., "2018-06-29T11:00:12.3456").
 
 ## Proposed Solution
-Define a format that encompasses both the [Date Time String Format](https://tc39.github.io/ecma262/#sec-date-time-string-format) and small variations therefrom—especially those that are valid [ISO 8601 date and time representations](https://www.loc.gov/standards/datetime/iso-tc154-wg5_n0038_iso_wd_8601-1_2016-02-16.pdf)—and standardize `Date.parse` treatment of input conforming to it.
+Update `Date.parse` to check input against a format that encompasses both the current [Date Time String Format](https://tc39.github.io/ecma262/#sec-date-time-string-format) and small variations therefrom—especially those that are valid [ISO 8601 date and time representations](https://www.loc.gov/standards/datetime/iso-tc154-wg5_n0038_iso_wd_8601-1_2016-02-16.pdf) and standardize treatment of input conforming to it before falling back on implementation-defined behavior.
+
+**NOTE**: Standard treatment includes both acceptance _and_ (where appropriate) rejection of input, as specified below.
 
 ### Background
 [Date Time String Format](https://tc39.github.io/ecma262/#sec-date-time-string-format) defines a "string interchange format for date-times" that is based on ISO 8601 extended format calendar date and time representations.
