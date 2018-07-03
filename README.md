@@ -14,11 +14,11 @@ As a result, implementations differ in their treatment of such "not-quite right"
 Behavior can be explored at https://output.jsbin.com/sujuduraci#test-cases , but here is a summary:
 * Chrome, Edge, and Safari accept signed years with the wrong digit count (e.g., "+2018-06-29" and "+0002018-06-29").
 * Chrome, Edge, and Safari accept unsigned years with more than four digits (e.g., "123456-10-12").
-* Chrome and Edge interpret out-of-bounds dates up to 31 (e.g., "2018-02-30") as specifying a date in the following month.
+* Chrome and Edge interpret out-of-bounds days up to 31 (e.g., "2018-02-30") as specifying a date in the following month.
 * Chrome accepts lowercase time designators and/or time zone offsets (e.g., "2018-06-29t15:00z").
 * Edge accepts nonzero minutes and/or seconds when the hour is 24 (e.g., "2018-06-28T24:01:01Z").
-* Safari accepts a seconds value of 60 (e.g., "2015-06-30T23:59:60Z").
-* Chrome and Edge accept "Z" offsets in the absense of a time component. Edge further accepts other letters (e.g., "2018-06-29E").
+* Safari accepts a seconds value of 60 (e.g., "2015-06-30T23:59:60Z"), iterpreted as end-of-minute.
+* Chrome and Edge accept "Z" offsets in the absense of a time component. Edge further accepts other letters (e.g., "2018-06-29E"), interpreted as [military time zones](https://en.wikipedia.org/wiki/List_of_military_time_zones).
 * Edge accepts hh:mm time zone offsets in the absense of a time component (e.g., "2018-06-29-04:00").
 * Edge accepts hours-only time zone offsets, but only with a fully-specified date component (e.g., "2018-06-29T11:00-04").
 * Edge and Safari accept out-of-bounds time zone offsets (e.g., "2018-06-28T15:00-24:00").
@@ -29,7 +29,7 @@ Define a format that encompasses both the [Date Time String Format](https://tc39
 
 ### Background
 [Date Time String Format](https://tc39.github.io/ecma262/#sec-date-time-string-format) defines a "string interchange format for date-times" that is based on ISO 8601 extended format calendar date and time representations.
-It is in fact a subset thereof, with the exception of allowing "24" for hour (which ISO 8601 permits only within time _interavals_).
+It is in fact a subset thereof, with the exception of allowing "24" for hour (which ISO 8601 permits only within time _intervals_).
 [`Date.prototype.toISOString`](https://tc39.github.io/ecma262/#sec-date.prototype.toisostring) returns strings conforming to it, and [`Date.parse`](https://tc39.github.io/ecma262/#sec-date.parse) is required to accept conforming strings and correctly interpret them as ISO 8601.
 I believe the format is exactly described by the following regular expression (ignoring whitespace, which is only provided with the hope of improving readability):
 ```js
@@ -51,7 +51,7 @@ I believe the format is exactly described by the following regular expression (i
   )?
 $/
 ```
-Every current implementation I could find correctly interprets a superset of this format as would be expected.
+Every current implementation I could find correctly interprets input matching a superset of this format as would be expected, but there is not uniform interpretation of edge cases that conform to even a strict reading of it (e.g., "2018-02-30" and "2018-06-28T24:01:01Z" and "2018-06-28T15:00-24:00").
 
 ### Changes
 Specify the behavior of `Date.parse` not just for input conforming to the interchange format, but to a superset of it that encompasses both more of ISO 8601 and also invalid neighbors of valid input that may fail e.g. bounds checks or decimal localization or uppercase rules:
