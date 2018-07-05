@@ -126,10 +126,13 @@ Reject input that does not match the intersection of ISO 8601 and the currently-
 
 ### Other potential extensions (currently not recommended)
 * Accept unsigned long years (e.g., "002018-07-03").
-  * Invalid per ISO 8601.
+  * Such years are not valid in ISO 8601.
 * Accept fractional minutes or hours (e.g., "2018-07-03T18:20.5Z").
+  * Such values are valid in ISO 8601, but are something of an advanced feature.
 * Specify uniform treatment for non-"Z" character time zone offsets (e.g., "2018-07-03T14:20Q").
-  * Invalid per ISO 8601.
+  * Such offsets are not valid in ISO 8601.
+* Specify uniform treatment for any string that starts with four digits optionally preceded by a sign.
+  * This would disallow implementations from accepting ISO 8601 ordinal dates (e.g., "2018-186") or week dates (e.g., "2018-W27-4"), not to mention basic formats or input that is not valid in ISO 8601.
 
 ## Discussion
 ### Backwards Compatibility
