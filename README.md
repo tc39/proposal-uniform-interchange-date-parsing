@@ -56,7 +56,8 @@ I believe the interchange format is exactly described by the following regular e
       :(?<second> [0-5][0-9] )
       (?<fraction> \.[0-9]{3} )?
     )?
-    (?<offset> Z | [+-] ( [01][0-9] | 2[0-4] ):( [0-5][0-9] ) )?
+    (?<! T24(:00)?:[0-9]*[1-9] | T24:00:00.[0-9]*[1-9] )
+    (?<offset> Z | [+-] ( [01][0-9] | 2[0-3] ):( [0-5][0-9] ) )?
   )?
 $/
 ```
