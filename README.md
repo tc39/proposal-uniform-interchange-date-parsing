@@ -57,11 +57,11 @@ I believe the interchange format is exactly described by the following regular e
       (?<fraction> \.[0-9]{3} )?
     )?
     (?<! T24(:00)?:[0-9]*[1-9] | T24:00:00.[0-9]*[1-9] )
-    (?<offset> Z | [+-] ( [01][0-9] | 2[0-3] ):( [0-5][0-9] ) )?
+    (?<offset> Z | [+-] (?! 24 )( [01][0-9] | 2[0-4] ):( [0-5][0-9] ) )?
   )?
 $/
 ```
-Every current implementation I could find correctly interprets input matching a superset of this format as would be expected, but there is not uniform interpretation of edge cases that conform to even a strict reading of it (e.g., "2018-02-30" and "2018-06-28T24:01:01Z" and "2018-06-28T15:00-24:00").
+Every current implementation I could find correctly interprets input matching this format (as would be expected) and a superset that includes fewer or more than three fractional digits (e.g., "2018-07-05T20:57:01.42Z"). However, there is _not_ uniform interpretation of edge cases whose nonconformance is limited to out-of-bounds fields (e.g., "2018-02-30" and "2018-06-28T24:01:01Z" and "2018-06-28T15:00-24:00").
 
 ### Changes
 Specify the behavior of `Date.parse` not just for input conforming to the interchange format, but to a superset of it that encompasses both more of ISO 8601 and also invalid neighbors of valid input that may fail e.g. bounds checks or decimal localization or uppercase rules:
