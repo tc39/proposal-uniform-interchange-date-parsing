@@ -9,7 +9,10 @@ This proposal is at stage 0 of [the TC39 Process](https://tc39.github.io/process
 None yet.
 
 ## Motivation
-[`Date.parse`](https://tc39.github.io/ecma262/#sec-date.parse) specifies an initial attempt to parse input as a [ <strong>±<em>YY</em></strong> ] <strong><em>YYYY</em></strong> [ <strong>-<em>MM</em></strong> [ <strong>-<em>DD</em></strong> ] ] [ <strong>T<em>HH</em>:<em>mm</em></strong> [ <strong>:<em>ss</em></strong> [ <strong>.<em>sss</em></strong> ] ] [ <strong><em>Z</em></strong> ] ] [ECMAScript Date Time String](https://tc39.github.io/ecma262/#sec-date-time-string-format) (that "interchange format" being essentially a limited profile of ISO 8601 extended format calendar date-times), but all input that does not strictly conform is allowed to fall back to implementation-specific behavior—even if the input divergence was out-of-bounds field values/combinations/etc. and the user intent was almost certainly implementation-agnostic processing.
+[ECMAScript Date Time String Format](https://tc39.github.io/ecma262/#sec-date-time-string-format) defines a [ <strong>±<em>YY</em></strong> ] <strong><em>YYYY</em></strong> [ <strong>-<em>MM</em></strong> [ <strong>-<em>DD</em></strong> ] ] [ <strong>T<em>HH</em>:<em>mm</em></strong> [ <strong>:<em>ss</em></strong> [ <strong>.<em>sss</em></strong> ] ] [ <strong><em>Z</em></strong> ] ] "string interchange format for date-times" that is based on ISO 8601 extended format calendar date and time representations. It is essentially an ISO 8601 profile, with the exception of allowing "24" for hour (which ISO 8601 permits only within time _intervals_).
+[`Date.prototype.toISOString`](https://tc39.github.io/ecma262/#sec-date.prototype.toisostring) returns strings conforming to it, and [`Date.parse`](https://tc39.github.io/ecma262/#sec-date.parse) is required to accept conforming strings and correctly interpret them as ISO 8601.
+
+This superficially _seems_ to support the desirable developer confidence that any string purported to be an instance of the format will be handled identically by any correct `Date.parse` implementation, but in fact does not because that function is allowed to fall back to implementation-specific behavior for all input that does not strictly conform—even if the divergence was out-of-bounds field values/combinations/etc. ("_Illegal values (out-of-bounds as well as syntax errors) in a format string means that the format string is not a valid instance of this format_").
 As a result, implementations differ in their treatment of such "not-quite right" input in ways that they should not.
 Behavior can be explored at https://output.jsbin.com/sujuduraci#test-cases , but here is a summary:
 * Chrome, Edge, and Safari accept signed years with the wrong digit count (e.g., "+2018-06-29" and "+0002018-06-29").
@@ -24,23 +27,27 @@ Behavior can be explored at https://output.jsbin.com/sujuduraci#test-cases , but
 * Edge and Safari accept out-of-bounds time zone offsets (e.g., "2018-06-28T15:00-24:00").
 * Chrome, Edge, Firefox, and Safari accept too few or too many fractional second digits (e.g., "2018-06-29T11:00:12.3456").
 
+In short, developers can only trust `Date.parse` after theirselves going through cumbersome and error-prone validation of input against the interchange format—which undermines the benefit of using `Date.parse` in the first place!
+
 ## Proposed Solution
 Update `Date.parse` to check input against a format that encompasses both the current [Date Time String Format](https://tc39.github.io/ecma262/#sec-date-time-string-format) and small variations therefrom—especially those that are valid [ISO 8601 date and time representations](https://www.loc.gov/standards/datetime/iso-tc154-wg5_n0038_iso_wd_8601-1_2016-02-16.pdf) and standardize treatment of input conforming to it before falling back on implementation-defined behavior.
 
 **NOTE**: Standard treatment includes both acceptance _and_ (where appropriate) rejection of input, as specified below.
 
 ### Background
-[Date Time String Format](https://tc39.github.io/ecma262/#sec-date-time-string-format) defines a "string interchange format for date-times" that is based on ISO 8601 extended format calendar date and time representations.
-It is in fact a subset thereof, with the exception of allowing "24" for hour (which ISO 8601 permits only within time _intervals_).
-[`Date.prototype.toISOString`](https://tc39.github.io/ecma262/#sec-date.prototype.toisostring) returns strings conforming to it, and [`Date.parse`](https://tc39.github.io/ecma262/#sec-date.parse) is required to accept conforming strings and correctly interpret them as ISO 8601.
-I believe the format is exactly described by the following regular expression (ignoring whitespace, which is only provided with the hope of improving readability):
+I believe the interchange format is exactly described by the following regular expression (ignoring whitespace, which is only provided with the hope of improving readability):
 ```js
 /^
   (?<year> [0-9]{4} | [+-][0-9]{6} )
   (
     -(?<month> 0[1-9] | 1[0-2] )
     (
-      -(?<day> 0[1-9] | [12][0-9] | 3[01] )
+      -(?<day>
+        0[1-9] | 1[0-9] | 2[0-8] |
+        (?<! ( [13579] | [02468][^048] | [13579][^26] )(00)?-02- ) 29 |
+        (?<! 02- ) 30 |
+        (?<! (02|04|06|09|11)- ) 31
+      )
     )?
   )?
   (
