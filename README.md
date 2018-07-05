@@ -138,6 +138,11 @@ Reject input that does not match the intersection of ISO 8601 and the currently-
 ### Backwards Compatibility
 This is by design an area of wide variance between implementations, but none of the proposed changes would require any input that is currently accepted by all of them to start being rejected.
 
+### Exposing string conformance
+Should ECMAScript expose a means of testing strings for conformance with the date-time interchange format?
+Something like `Date.isInterchangeCompatible` could be useful for validating input _before_ sending it to `Date.parse`, since that function retains the ability to accept strings that don't conform to the format.
+It would also be nice to expose not just a Boolean classifier but the actual date-time fields (an enhancement similar to that offered by `RegExp.prototype.exec` over `RegExp.prototype.test`), but getting such an interface right at this point seems overly difficult, especially when considering time zone offsets (which dampen the possibility of just returning a [year, month, …] array for use with e.g. `new Date`).
+
 ### Related efforts
 Morgan Phillips's [proposal-date-time-string-format](https://github.com/tc39/proposal-date-time-string-format) has a similar goal of standardizing `Date.parse` behavior over a broader range of input, but is focused on making more of it acceptable—including in particular strings that are not valid per ISO 8601, some of which use locale-specific characteristics such as the relative order of year, month, and day fields.
 This proposal, in contrast, is focused on _rejecting_ input when it diverges from the interchange format through slight errors such as out-of-bounds values, improper designators or separators, and improper combinations of fields. Also unlike [proposal-date-time-string-format](https://github.com/tc39/proposal-date-time-string-format) and of particular importance is that every change proposed here is related to ISO 8601 calendar date-times, since that is the basis of the ECMAScript interchange format.
