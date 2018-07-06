@@ -138,6 +138,7 @@ Reject input that does not match the intersection of ISO 8601 and the currently-
 ## Discussion
 ### Backwards Compatibility
 This is by design an area of wide variance between implementations, but none of the proposed changes would require any input that is currently accepted by all of them to start being rejected.
+Firefox already implements every proposed rejection, and many of the concessions.
 
 ### Exposing string conformance
 Should ECMAScript expose a means of testing strings for conformance with the date-time interchange format?
