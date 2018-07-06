@@ -89,20 +89,20 @@ Ordered into sequential suggestions (expecting the later ones to be increasingly
 
 1. Use correct vocabulary for sign-prefixed years ("expanded", not "extended") and be specific about basing the ECMAScript format upon ISO 8601 _calendar date_ formats (in contrast with YYYY-DDD _ordinal date_ and YYYY-Www-D _week date_ formats).
 Reject input that does not match the intersection of ISO 8601 and the currently-documented ECMAScript Date Time String Format.
-   * If <var>yearish</var> is sign-prefixed but has a digit count other than six (e.g., "-10000" or "+2018"), return `NaN`.
+   * If <var>yearish</var> is sign-prefixed but has a digit count other than six (e.g., "-10000" or "+2018"), return `NaN` (revised in chunk 4).
    * If <var>monthish</var> is present but not 01 through 12, return `NaN`.
    * If <var>dayish</var> is present but equals 00 or exceeds the number of days in the given month and year (e.g., "2018-02-30"), return `NaN`.
-   * If <var>hourish</var> exceeds 23, return `NaN` (breaking current acceptance of "…T24:00:00", but see below).
+   * If <var>hourish</var> exceeds 23, return `NaN` (breaking current acceptance of "…T24:00:00", but restored in chunk 2).
    * If <var>minuteish</var> exceeds 59, return `NaN`.
    * If <var>secondish</var> exceeds 59 (e.g., "2015-06-30T23:59:60Z"), return `NaN`.
-   * If <var>fraction</var> contains a comma (e.g., "2018-07-03T18:20:30,123Z"), return `NaN`.
-   * If <var>fraction</var> is present but does not have exactly three digits, return `NaN`.
+   * If <var>fraction</var> contains a comma (e.g., "2018-07-03T18:20:30,123Z"), return `NaN` (revised in chunk 4).
+   * If <var>fraction</var> is present but does not have exactly three digits, return `NaN` (revised in chunk 2).
    * If <var>offsetish</var> is present without a time component (e.g., "2018-07-03Z"), return `NaN`.
    * If <var>offsetish</var> hour exceeds 23 or minute exceeds 59, return `NaN`.
-   * If the input contains a lowercase letter, return `NaN`.
+   * If the input contains a lowercase letter, return `NaN` (revised in chunk 2).
 
 2. Add allowances for reasonable and/or backwards-compatible input acceptance.
-   * If <var>hourish</var> is 24 and <var>minuteish</var> is 00 and <var>secondish</var> is 00, allow interpretation as an "end of day" midnight (restoring acceptance of "…T24:00:00") and update the text to indicate that such input is technically invalid ISO 8601.
+   * If <var>hourish</var> is 24 and none of <var>minuteish</var> or <var>secondish</var> or <var>offsetish</var> is nonzero, allow interpretation as an "end of day" midnight (restoring acceptance of "…T24:00:00") and update the text to indicate that such input is technically invalid ISO 8601.
    * If <var>fraction</var> is present and has fewer than three digits, act as if the missing rightmost digits were 0.
    * If <var>fraction</var> has more than three digits, allow implementations to accept it but do not specify the effect of excess digits.
    * If <var>yearish</var> is sign-prefixed and has at least four digits but no more than six after stripping leading zeroes (e.g., "+2018" or "+00002018"), act as if it had exactly six digits.
@@ -111,10 +111,10 @@ Reject input that does not match the intersection of ISO 8601 and the currently-
 
 3. Loosen the similarity requirement to require rejection of more input, including more input that is valid ISO 8601 calendar date/date-time but does not match the ECMAScript Date Time String Format.
    * Allow both flavors of <var>yearish</var> to have four or more digits (e.g., `(?<yearish> [0-9]{4,} | [+-][0-9]{4,} )`) and return `NaN` if <var>yearish</var> has more than four but is not sign-prefixed.
-   * Allow a space character in place of time designator "T" (e.g., `[T\x20]`, and return `NaN` in such cases.
+   * Allow a space character in place of time designator "T" (e.g., `[T\x20]`, and return `NaN` in such cases (revised in chunk 4).
    * Allow <var>fraction</var> to match a decimal sign (dot or comma) with no digits (e.g., `(?<fraction> [.,][0-9]* )`), and return `NaN` if it does so.
    * Allow <var>fraction</var> to match a partial minute or partial hour (e.g., `T(?<hourish> [0-9]{2} )((?<hourFraction> [.,][0-9]+ )? | :(?<minuteish> [0-9]{2} )(:(?<secondish> [0-9]{2} ))?(?<fraction> [.,][0-9]+ )?)`), and return `NaN` if it does so.
-   * Allow <var>offsetish</var> without a minutes component (e.g., `(?<offsetish> Z | [+-][0-9]{2}(:[0-9]{2})? )`), and return `NaN` in such cases.
+   * Allow <var>offsetish</var> without a minutes component (e.g., `(?<offsetish> Z | [+-][0-9]{2}(:[0-9]{2})? )`), and return `NaN` in such cases (revised in chunk 4).
 
 4. Accept more input that is invalid ECMAScript Date Time String Format but is potentially valid ISO 8601.
    * If <var>yearish</var> is sign-prefixed and has more than six digits but specifies an in-range year, act as if it had exactly six digits.
