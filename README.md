@@ -104,7 +104,7 @@ Reject input that does not match the intersection of ISO 8601 and the currently-
 2. Add allowances for reasonable and/or backwards-compatible input acceptance.
    * If <var>hourish</var> is 24 and none of <var>minuteish</var> or <var>secondish</var> or <var>offsetish</var> is nonzero, allow interpretation as an "end of day" midnight (restoring acceptance of "…T24:00:00") and update the text to indicate that such input is technically invalid ISO 8601.
    * If <var>fraction</var> is present and has fewer than three digits, act as if the missing rightmost digits were 0.
-   * If <var>fraction</var> has more than three digits, allow implementations to accept it but do not specify the effect of excess digits.
+   * If <var>fraction</var> has more than three digits, allow implementations to accept it but specify the effect of excess digits as truncation (or alternatively, as rounding).
    * If <var>yearish</var> is sign-prefixed and has at least four digits but no more than six after stripping leading zeroes (e.g., "+2018" or "+00002018"), act as if it had exactly six digits.
    * Interpret lowercase letters (e.g., "2018-07-03t18:20z") as uppercase.
      * [ISO 8601-1 §3.4.1](https://www.loc.gov/standards/datetime/iso-tc154-wg5_n0038_iso_wd_8601-1_2016-02-16.pdf#page=18): "_In date and time representations lower case characters may be used when upper case characters are not available._"
