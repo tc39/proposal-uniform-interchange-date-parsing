@@ -130,10 +130,12 @@ Reject input that does not match the intersection of ISO 8601 and the currently-
   * Such years are not valid in ISO 8601.
 * Accept fractional minutes or hours (e.g., "2018-07-03T18:20.5Z").
   * Such values are valid in ISO 8601, but are something of an advanced feature.
-* Specify uniform treatment for non-"Z" character time zone offsets (e.g., "2018-07-03T14:20Q").
+* Specify uniform treatment for non-`Z` "military" character time zone offsets (e.g., "2018-07-03T14:20Q").
   * Such offsets are not valid in ISO 8601.
+* Specify uniform treatment for four digit time zone offsets that don't have a colon (e.g., "2018-07-12T09:27-0400").
+  * Such offsets appear in [RFC 5322](https://tools.ietf.org/html/rfc5322#section-3.3) and are valid in ISO 8601 _basic_ format representations, but the ECMAScript interchange format is otherwise a profile limited to _extended_ format. However, a case could be made for accepting them, because—as noted in [RFC 3339](https://tools.ietf.org/html/rfc3339#appendix-A)—"ISO 8601 is not clear if mixtures of basic and extended format are permissible."
 * Specify uniform treatment for any string that starts with four digits optionally preceded by a sign.
-  * This would disallow implementations from accepting ISO 8601 ordinal dates (e.g., "2018-186") or week dates (e.g., "2018-W27-4"), not to mention basic formats or input that is not valid in ISO 8601.
+  * This would disallow implementations from accepting ISO 8601 ordinal dates (e.g., "2018-186") or week dates (e.g., "2018-W27-4"), not to mention ISO 8601 basic formats or input that does not conform to ISO 8601.
 
 ## Discussion
 ### Backwards Compatibility
