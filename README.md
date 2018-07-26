@@ -2,7 +2,7 @@
 
 A proposal to standardize `Date.parse` behavior for a broader range of input, accepting slightly more ISO 8601 calendar date-times and rejecting out-of-bounds field values and/or combinations while still allowing implementation-defined fallbacks for _other_ input.
 
-[explainer](https://docs.google.com/presentation/d/1E4f7hMmJLj09FWq8YEIaATAzIShHpFY37OyWZMf3I5c/edit?usp=sharing)
+[2018 July slides](https://docs.google.com/presentation/d/1E4f7hMmJLj09FWq8YEIaATAzIShHpFY37OyWZMf3I5c/edit?usp=sharing)
 
 ## Status
 This proposal is at stage 0 of [the TC39 Process](https://tc39.github.io/process-document/).
