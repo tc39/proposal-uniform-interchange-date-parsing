@@ -147,7 +147,7 @@ Firefox already implements every proposed rejection, and many of the concessions
 
 ### Exposing string conformance
 Should ECMAScript expose a means of testing strings for conformance with the date-time interchange format?
-Something like `Date.isInterchangeCompatible` could be useful for validating input _before_ sending it to `Date.parse`, since that function retains the ability to accept strings that don't conform to the format.
+Something like `Date.isPortableString` could be useful for validating input _before_ sending it to `Date.parse`, since that function retains the ability to accept strings that don't conform to the format.
 It would also be nice to expose not just a Boolean classifier but the actual date-time fields (an enhancement similar to that offered by `RegExp.prototype.exec` over `RegExp.prototype.test`), but getting such an interface right at this point seems overly difficult, especially when considering time zone offsets (which dampen the possibility of just returning a [year, month, …] array for use with e.g. `new Date`).
 
 ### Related efforts
@@ -155,4 +155,4 @@ It would also be nice to expose not just a Boolean classifier but the actual dat
 This proposal, in contrast, is focused on _rejecting_ input when it diverges from the interchange format through slight errors such as out-of-bounds values, improper designators or separators, and improper combinations of fields. Also unlike [proposal-date-time-string-format](https://github.com/tc39/proposal-date-time-string-format) and of particular importance is that every change proposed here is related to ISO 8601 calendar date-times, since that is the basis of the ECMAScript interchange format.
 Essentially, this proposal aims to make parsing a limited subset of ISO 8601 calendar date-times the primary function of `Date.parse`, restricting implementation-specific behavior to other date-time formats.
 
-[temporal](https://github.com/tc39/proposal-temporal) by @maggiepint, @mj1856, and @bterlson seeks to introduce _new_ types for working with dates and times, making it substantially larger than this proposal. Regardless of its progress, however, `Date` will remain part of ECMAScript and should be improved where possible. The inference of local vs. no UTC offset from the presence vs. absence of time fields in a parsed ISO 8601 string can't be changed, but the parsing itself can be made more predictable as presented here.
+[temporal](https://github.com/tc39/proposal-temporal) by @maggiepint, @mj1856, and @bterlson seeks to introduce _new_ types for working with dates and times, making it substantially larger than this proposal. Regardless of its progress, however, `Date` will remain part of ECMAScript and should be improved where possible. The inference of local vs. zero UTC offset from the presence vs. absence of time fields in a parsed ISO 8601 string can't be changed, but the parsing itself can be made more predictable as presented here.
