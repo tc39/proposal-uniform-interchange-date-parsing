@@ -5,10 +5,11 @@ A proposal to standardize `Date.parse` behavior for a broader range of input, ac
 [2018 July slides](https://docs.google.com/presentation/d/1E4f7hMmJLj09FWq8YEIaATAzIShHpFY37OyWZMf3I5c/edit?usp=sharing)
 
 ## Status
-This proposal is at stage 0 of [the TC39 Process](https://tc39.github.io/process-document/).
+This proposal is at stage 1 of [the TC39 Process](https://tc39.github.io/process-document/).
 
 ## Champions
-None yet.
+* Richard Gibson
+* Mathias Bynens
 
 ## Motivation
 [ECMAScript Date Time String Format](https://tc39.github.io/ecma262/#sec-date-time-string-format) defines a [ <strong>±<em>YY</em></strong> ] <strong><em>YYYY</em></strong> [ <strong>-<em>MM</em></strong> [ <strong>-<em>DD</em></strong> ] ] [ <strong>T<em>HH</em>:<em>mm</em></strong> [ <strong>:<em>ss</em></strong> [ <strong>.<em>sss</em></strong> ] ] [ <strong><em>Z</em></strong> ] ] "string interchange format for date-times" that is based on ISO 8601 extended format calendar date and time representations.
