@@ -1,6 +1,6 @@
 # Uniform parsing of quasi-standard Date.parse input
 
-A proposal to standardize `Date.parse` behavior for a broader range of input, accepting slightly more ISO 8601 calendar date-times and rejecting out-of-bounds field values and/or combinations while still allowing implementation-defined fallbacks for _other_ input.
+A proposal to standardize `Date.parse` behavior for a broader range of input, accepting more of RFC 3339 and requiring rejection of input including invalid element combinations or whose digits violate bound, while still allowing implementation-defined fallbacks for _other_ input.
 
 [2019 March slides](https://docs.google.com/presentation/d/1LuJzeR7Y-e-LcQObQesJfJsIVGkiZCMoZhVMO5OxIoc/edit)
 
@@ -12,7 +12,7 @@ This proposal is at stage 1 of [the TC39 Process](https://tc39.github.io/process
 * Mathias Bynens
 
 ## Motivation
-[ECMAScript Date Time String Format](https://tc39.github.io/ecma262/#sec-date-time-string-format) defines a [ <strong>±<em>YY</em></strong> ] <strong><em>YYYY</em></strong> [ <strong>-<em>MM</em></strong> [ <strong>-<em>DD</em></strong> ] ] [ <strong>T<em>HH</em>:<em>mm</em></strong> [ <strong>:<em>ss</em></strong> [ <strong>.<em>sss</em></strong> ] ] [ <strong><em>Z</em></strong> ] ] "string interchange format for date-times" that is based on ISO 8601 extended format calendar date and time representations.
+[ECMAScript Date Time String Format](https://tc39.github.io/ecma262/#sec-date-time-string-format) defines a [ <strong>±<em>YY</em></strong> ] <strong><em>YYYY</em></strong> [ <strong>-<em>MM</em></strong> [ <strong>-<em>DD</em></strong> ] ] [ <strong>T<em>HH</em>:<em>mm</em></strong> [ <strong>:<em>ss</em></strong> [ <strong>.<em>sss</em></strong> ] ] [ <strong><em>Z</em></strong> ] ] "string interchange format for date-times" that is based on ISO 8601 extended format calendar date and time representations and specifically the RFC 3339 profile.
 It is essentially an ISO 8601-2 [profile](https://dotat.at/tmp/ISO_8601-201x-2-DIS.pdf#page=26), with the exceptions of allowing "24" for hour (which ISO 8601 permits only within time _intervals_) and use of reduced precision date representations (omitting day-of-month or both month and day-of-month elements) in combined date and time of day representations (e.g., "2018-07T10:23").
 [`Date.prototype.toISOString`](https://tc39.github.io/ecma262/#sec-date.prototype.toisostring) returns strings conforming to it, and [`Date.parse`](https://tc39.github.io/ecma262/#sec-date.parse) is required to accept conforming strings and correctly interpret them as ISO 8601.
 
@@ -68,7 +68,7 @@ $/
 Every current implementation I could find correctly interprets input matching this format (as would be expected) and a superset that includes fewer or more than three fractional digits (e.g., "2018-07-05T20:57:01.42Z"). However, there is _not_ uniform interpretation of edge cases whose nonconformance is limited to out-of-bounds fields (e.g., "2018-02-30" and "2018-06-28T24:01:01Z" and "2018-06-28T15:00-24:00").
 
 ### Changes
-Specify the behavior of `Date.parse` not just for input conforming to the interchange format, but to a superset of it that encompasses both more of ISO 8601 and also invalid neighbors of valid input that may fail e.g. bounds checks or decimal localization or uppercase rules:
+Specify the behavior of `Date.parse` not just for input conforming to the interchange format, but to a superset of it that encompasses both more of ISO 8601 and also invalid neighbors of valid input that may fail e.g. bounds checks or decimal localization or uppercase rules (and specifically those that that would be valid with different digits):
 ```js
 /^
   (?<yearish> [0-9]{4} | [+-][0-9]{4,} )
@@ -89,45 +89,8 @@ Specify the behavior of `Date.parse` not just for input conforming to the interc
 $/i
 ```
 Implementation-specific parsing will only be allowed for input that is clearly not intended as or based upon the standard interchange format.
-Ordered into sequential suggestions (expecting the later ones to be increasingly controversial and noting that this proposal can survive a cutoff point partway or all of the way through any chunk):
 
-1. Use correct vocabulary for sign-prefixed years ("expanded", not "extended") and be specific about basing the ECMAScript format upon ISO 8601 _calendar date_ formats (in contrast with YYYY-DDD _ordinal date_ and YYYY-Www-D _week date_ formats).
-Reject input that does not match the intersection of ISO 8601 and the currently-documented ECMAScript Date Time String Format.
-   * If <var>yearish</var> is sign-prefixed but has a digit count other than six (e.g., "-10000" or "+2018"), return `NaN` (revised in chunk 4).
-   * If <var>monthish</var> is present but not 01 through 12, return `NaN`.
-   * If <var>dayish</var> is present but equals 00 or exceeds the number of days in the given month and year (e.g., "2018-02-30"), return `NaN`.
-   * If <var>hourish</var> exceeds 23, return `NaN` (breaking current acceptance of "…T24:00:00", but restored in chunk 2).
-   * If <var>minuteish</var> exceeds 59, return `NaN`.
-   * If <var>secondish</var> exceeds 59 (e.g., "2015-06-30T23:59:60Z"), return `NaN`.
-   * If <var>fraction</var> contains a comma (e.g., "2018-07-03T18:20:30,123Z"), return `NaN` (revised in chunk 4).
-   * If <var>fraction</var> is present but does not have exactly three digits, return `NaN` (revised in chunk 2).
-   * If <var>offsetish</var> is present without a time component (e.g., "2018-07-03Z"), return `NaN`.
-   * If <var>offsetish</var> hour exceeds 23 or minute exceeds 59, return `NaN`.
-   * If the input contains a lowercase letter, return `NaN` (revised in chunk 2).
-
-2. Add allowances for reasonable and/or backwards-compatible input acceptance.
-   * If <var>hourish</var> is 24 and none of <var>minuteish</var> or <var>secondish</var> or <var>offsetish</var> is nonzero, allow interpretation as an "end of day" midnight (restoring acceptance of "…T24:00:00") and update the text to indicate that such input is technically not a valid ISO 8601 representation.
-   * If <var>fraction</var> is present and has fewer than three digits, act as if the missing rightmost digits were 0.
-   * If <var>fraction</var> has more than three digits, allow implementations to accept it but specify the effect of excess digits as truncation (or alternatively, as rounding).
-   * If <var>yearish</var> is sign-prefixed and has at least four digits but no more than six after stripping leading zeroes (e.g., "+2018" or "+00002018"), act as if it had exactly six digits.
-   * Interpret lowercase letters (e.g., "2018-07-03t18:20z") as uppercase.
-     * [ISO 8601:2004(E) §3.4.1](https://dotat.at/tmp/ISO_8601-2004_E.pdf#page=17): "_In date and time representations lower case characters may be used when upper case characters are not available._"
-
-3. Loosen the similarity requirement to require rejection of more input, including more input that is a valid ISO 8601 calendar date or date-time representation but does not match the ECMAScript Date Time String Format.
-   * Allow both flavors of <var>yearish</var> to have four or more digits (e.g., `(?<yearish> [0-9]{4,} | [+-][0-9]{4,} )`) and return `NaN` if <var>yearish</var> has more than four but is not sign-prefixed.
-   * Allow a space character in place of time designator "T" (e.g., `[T\x20]`, and return `NaN` in such cases (revised in chunk 4).
-   * Allow <var>fraction</var> to match a decimal sign (dot or comma) with no digits (e.g., `(?<fraction> [.,][0-9]* )`), and return `NaN` if it does so.
-   * Allow <var>fraction</var> to match a partial minute or partial hour (e.g., `T(?<hourish> [0-9]{2} )((?<hourFraction> [.,][0-9]+ )? | :(?<minuteish> [0-9]{2} )(:(?<secondish> [0-9]{2} ))?(?<fraction> [.,][0-9]+ )?)`), and return `NaN` if it does so.
-   * Allow <var>offsetish</var> without a minutes component (e.g., `(?<offsetish> Z | [+-][0-9]{2}(:[0-9]{2})? )`), and return `NaN` in such cases (revised in chunk 4).
-
-4. Accept more input that is invalid ECMAScript Date Time String Format but is a potentially valid ISO 8601 representation.
-   * If <var>yearish</var> is sign-prefixed and has more than six digits but specifies an in-range year, act as if it had exactly six digits.
-   * If the time designator is a space, act as if it were a "T".
-     * [ISO 8601:2004(E) §4.3.2](https://dotat.at/tmp/ISO_8601-2004_E.pdf#page=25): "_By mutual agreement of the partners in information interchange, the character [T] may be omitted in applications where there is no risk of confusing a date and time of day representation with others defined in this International Standard._"
-   * If <var>offsetish</var> has no minutes component (e.g., "2018-07-03T14:20-04"), act as if the minutes component were 00.
-     * [ISO 8601:2004(E) §4.2.5.1](https://dotat.at/tmp/ISO_8601-2004_E.pdf#page=23): "_When it is required to indicate the difference between local time and UTC of day, the representation of the difference can be expressed in hours and minutes, or hours only._"
-   * If <var>fraction</var> contains a comma, act as if it were a dot.
-      * [ISO 8601:2004(E) §4.4.3.2](https://dotat.at/tmp/ISO_8601-2004_E.pdf#page=27): "_The decimal fraction shall be divided from the integer part by the decimal sign specified in ISO 31-0, i.e. the comma [,] or full stop [.]. Of these, the comma is the preferred sign._"
+See the [draft spec](https://tc39.github.io/proposal-uniform-interchange-date-parsing/) for details.
 
 ### Other potential extensions (currently not recommended)
 * Accept unsigned long years (e.g., "002018-07-03").
