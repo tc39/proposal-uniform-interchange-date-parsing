@@ -1,0 +1,110 @@
+html {
+  font-family: sans-serif;
+}
+body {
+  padding-bottom: 3em;
+}
+.jump {
+  position: fixed;
+  top: 0;
+  right: 0;
+  padding: 0.75ex;
+  background: gold;
+  border-radius: 1ex;
+}
+kbd {
+  font-weight: bold;
+  color: gold;
+  background: grey;
+}
+
+/* ECMAScript */
+h1 .secnum {
+  margin-right: 10px;
+}
+emu-val {
+  font-weight: bold;
+}
+figure { display: block; margin: 1em 0; }
+table.lightweight-table {
+    border-collapse: collapse;
+    margin: 0;
+}
+table.lightweight-table td, table.lightweight-table th {
+    border: none;
+    padding: 0 0.5em;
+    vertical-align: baseline;
+}
+emu-note {
+    margin: 1em 0;
+    color: #666;
+    border-left: 5px solid #ccc;
+    display: flex;
+    flex-direction: row;
+}
+emu-note > span.note {
+    flex-basis: 100px;
+    min-width: 100px;
+    flex-grow: 0;
+    flex-shrink: 1;
+    text-transform: uppercase;
+    padding-left: 5px;
+}
+emu-note[type=editor] {
+  border-left-color: #faa;
+}
+emu-note > div.note-contents {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+emu-note > div.note-contents > p:first-of-type {
+  margin-top: 0;
+}
+emu-note > div.note-contents > p:last-of-type {
+  margin-bottom: 0;
+}
+
+/* cases table */
+table.cases {
+  border-collapse: collapse;
+}
+table.cases tr {
+  border-bottom: 1px solid black;
+}
+table.cases tr > *:not(:first-child) {
+  padding-left: 1em;
+}
+table.cases tbody tr:nth-child(odd) {
+  background: #dedede;
+}
+table.cases tbody {
+  border-top: 3px solid black;
+}
+table.cases tbody tr.group-head {
+  background: palegreen;
+  font-style: italic;
+}
+table.cases tbody tr[class~="✗"] {
+  font-weight: bold;
+  color: red;
+}
+table.cases [class~="?"] {
+  color: blue;
+  font-weight: bold;
+}
+table.cases tbody tr td:nth-child(n+2):not(:last-child)::before {
+  content: "✘ ";
+  color: #f44;
+}
+table.cases tr.iso td:nth-child(2):not(:last-child)::before {
+  content: "✔ ";
+  color: blue;
+}
+table.cases tr.rfc td:nth-child(3):not(:last-child)::before {
+  content: "✔ ";
+  color: blue;
+}
+table.cases tr.es td:nth-child(4):not(:last-child)::before {
+  content: "✔ ";
+  color: blue;
+}

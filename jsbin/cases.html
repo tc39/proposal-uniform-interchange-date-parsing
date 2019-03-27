@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JS Bin</title>
+  <link rel="stylesheet" type="text/css" href="cases.css">
+  <script defer src="cases.js"></script>
+</head>
+<body>
+  <table class="cases">
+    <thead>
+      <tr>
+        <th>Input</th>
+        <th class="iso">ISO 8601</th>
+        <th class="rfc">RFC 3339</th>
+        <th class="es">ECMAScript</th>
+        <th><code>Date.parse</code></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="group-head"><th>Positive leap second</th></tr>
+      <tr class="iso rfc"><td>1972-06-30T23:59:60Z</td>
+        <td title="ISO 8601:2004(E) §4.2.1: second is represented by two digits from [00] to [60]. The representation of the second by [60] is only allowed to indicate a positive leap second or an instant within that second."></td>
+        <td data-ref="https://tools.ietf.org/html/rfc3339#section-5.7" title="RFC 3339 §5.7: The grammar element time-second may have the value &quot;60&quot; at the end of months in which a leap second occurs"></td>
+        <td data-ref="https://ecma-international.org/ecma-262/9.0/#sec-date-time-string-format" title="ECMAScript 2018 §20.3.1.15: **ss** is the number of complete seconds since the start of the minute as two decimal digits from 00 to 59."></td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr class="group-head"><th>Too few fractional second digits</th></tr>
+      <tr class="iso rfc"><td>2019-03-26T14:00:00.9Z</td>
+        <td title="ISO 8601:2004(E) §4.2.2.4: The interchange parties, dependent upon the application, shall agree the number of digits in the decimal fraction. The format shall be [hhmmss,ss], [hhmm,mm] or [hh,hh] as appropriate (hour minute second, hour minute, and hour, respectively), with as many digits as necessary following the decimal sign."></td>
+        <td data-ref="https://tools.ietf.org/html/rfc3339#section-5.6" title="RFC 3339 §5.6: time-secfrac = &quot;.&quot; 1*DIGIT"></td>
+        <td data-ref="https://ecma-international.org/ecma-262/9.0/#sec-date-time-string-format" title="ECMAScript 2018 §20.3.1.15: **sss** is the number of complete milliseconds since the start of the second as three decimal digits."></td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr class="group-head"><th>Too many fractional second digits</th></tr>
+      <tr class="iso rfc"><td>2019-03-26T14:00:00.4999Z</td>
+        <td title="ISO 8601:2004(E) §4.2.2.4: The interchange parties, dependent upon the application, shall agree the number of digits in the decimal fraction. The format shall be [hhmmss,ss], [hhmm,mm] or [hh,hh] as appropriate (hour minute second, hour minute, and hour, respectively), with as many digits as necessary following the decimal sign."></td>
+        <td data-ref="https://tools.ietf.org/html/rfc3339#section-5.6" title="RFC 3339 §5.6: time-secfrac = &quot;.&quot; 1*DIGIT"></td>
+        <td data-ref="https://ecma-international.org/ecma-262/9.0/#sec-date-time-string-format" title="ECMAScript 2018 §20.3.1.15: **sss** is the number of complete milliseconds since the start of the second as three decimal digits."></td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr class="group-head"><th>Lowercase time designator</th></tr>
+      <tr class="iso rfc"><td>2019-03-26t14:00Z</td>
+        <td title="ISO 8601:2004(E) §3.4.1: In date and time representations lower case characters may be used when upper case characters are not available."></td>
+        <td data-ref="https://tools.ietf.org/html/rfc3339#section-5.6" title="RFC 3339 §5.6: Specifications that use this format in such environments [that distinguish between the upper- and lower-case letters 'A'-'Z' and 'a'-'z'] MAY further limit the date/time syntax so that the letters 'T' and 'Z' used in the date/time syntax must always be upper case.">(↓)</td>
+        <td data-ref="https://ecma-international.org/ecma-262/9.0/#sec-date-time-string-format" title="ECMAScript 2018 §20.3.1.15: **T** &quot;T&quot; appears literally in the string, to indicate the beginning of the time element."></td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr class="group-head"><th>Lowercase UTC designator</th></tr>
+      <tr class="iso rfc"><td>2019-03-26T14:00z</td>
+        <td title="ISO 8601:2004(E) §3.4.1: In date and time representations lower case characters may be used when upper case characters are not available."></td>
+        <td data-ref="https://tools.ietf.org/html/rfc3339#section-5.6" title="RFC 3339 §5.6: Specifications that use this format in such environments [that distinguish between the upper- and lower-case letters 'A'-'Z' and 'a'-'z'] MAY further limit the date/time syntax so that the letters 'T' and 'Z' used in the date/time syntax must always be upper case.">(↓)</td>
+        <td data-ref="https://ecma-international.org/ecma-262/9.0/#sec-date-time-string-format" title="ECMAScript 2018 §20.3.1.15: **Z** is the time zone offset specified as &quot;Z&quot; (for UTC) or either &quot;+&quot; or &quot;-&quot; followed by a time expression HH:mm"></td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr class="group-head"><th>Comma as decimal sign</th></tr>
+      <tr class="iso"><td>2019-03-26T14:00:00,999Z</td>
+        <td title="ISO 8601:2004(E) §4.2.2.4: the decimal fraction shall be divided from the integer part by the decimal sign specified in ISO 31-0, i.e. the comma [,] or full stop [.]. Of these, the comma is the preferred sign."></td>
+        <td data-ref="https://tools.ietf.org/html/rfc3339#section-5.6" title="RFC 3339 §5.6: time-secfrac = &quot;.&quot; 1*DIGIT"></td>
+        <td></td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr class="group-head"><th>Hours-only offset</th></tr>
+      <tr class="iso"><td>2019-03-26T10:00-04</td>
+        <td title="ISO 8601:2004(E) §4.2.5.2: The difference between the time scale of local time and UTC shall be expressed in hours-and-minutes, or hours-only independent of the precision of the local time expression associated with it."></td>
+        <td data-ref="https://tools.ietf.org/html/rfc3339#section-5.6" title="RFC 3339 §5.6: time-numoffset = (&quot;+&quot; / &quot;-&quot;) time-hour &quot;:&quot; time-minute"></td>
+        <td data-ref="https://ecma-international.org/ecma-262/9.0/#sec-date-time-string-format" title="ECMAScript 2018 §20.3.1.15: **Z** is the time zone offset specified as &quot;Z&quot; (for UTC) or either &quot;+&quot; or &quot;-&quot; followed by a time expression HH:mm"></td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr class="group-head"><th>Fractional minutes</th></tr>
+      <tr class="iso"><td>2019-03-26T14:00.9Z</td>
+        <td title="ISO 8601:2004(E) §4.2.2.4: 4.2.2.4 includes the definition of representations that have both reduced precision and a decimal fraction."></td>
+        <td data-ref="https://tools.ietf.org/html/rfc3339#section-5.6" title="RFC 3339 §5.6: partial-time = time-hour &quot;:&quot; time-minute &quot;:&quot; time-second [time-secfrac]"></td>
+        <td data-ref="https://ecma-international.org/ecma-262/9.0/#sec-date-time-string-format" title="ECMAScript 2018 §20.3.1.15: The format is as follows: YYYY-MM-DDTHH:mm:ss.sssZ"></td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr class="group-head"><th>ISO basic format date and time</th></tr>
+      <tr class="iso"><td>20190326T1400Z</td>
+        <td title="ISO 8601:2004(E) §2.3.3: **basic format**&#xA;format of a date and time representation or date and time format representation comprising the minimum number of time elements necessary for the precision required&#xA;Note to entry: The basic format should be avoided in plain text.">(↓)</td>
+        <td data-ref="https://tools.ietf.org/html/rfc3339#section-5.6" title="RFC 3339 §5.6: full-date = date-fullyear &quot;-&quot; date-month &quot;-&quot; date-mday&#xA;date-time = full-date &quot;T&quot; full-time"></td>
+        <td data-ref="https://ecma-international.org/ecma-262/9.0/#sec-date-time-string-format" title="ECMAScript 2018 §20.3.1.15: The format is as follows: YYYY-MM-DDTHH:mm:ss.sssZ"></td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr class="group-head"><th>Out-of-bounds day of month</th></tr>
+      <tr><td>2019-02-30</td>
+        <td title="ISO 8601:2004(E) §3.2.1: In the Gregorian calendar each calendar year is divided in 12 sequential calendar months, each
+consisting of a specific number of calendar days as indicated in Table 1."></td>
+        <td data-ref="https://tools.ietf.org/html/rfc3339#section-5.6" title="RFC 3339 §5.6: date-mday = 2DIGIT ; 01-28, 01-29, 01-30, 01-31 based on month/year"></td>
+        <td data-ref="https://ecma-international.org/ecma-262/9.0/#sec-date-time-string-format" title="ECMAScript 2018 §20.3.1.5: Illegal values (out-of-bounds as well as syntax errors) in a format string means that the format string is not a valid instance of this format."></td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr class="group-head"><th>Time past end of day</th></tr>
+      <tr><td>2019-03-25T24:01Z</td>
+        <td title="ISO 8601:2004(E) §4.2.1: **hour** is represented by two digits from [00] to [23]. ([24] shall not be used to represent hour.)"></td>
+        <td data-ref="https://tools.ietf.org/html/rfc3339#section-5.6" title="RFC 3339 §5.6: time-hour = 2DIGIT ; 00-23"></td>
+        <td data-ref="https://ecma-international.org/ecma-262/9.0/#sec-date-time-string-format" title="ECMAScript 2018 §20.3.1.5: As every day both starts and ends with midnight, the two notations 00:00 and 24:00 are available to distinguish the two midnights that can be associated with one date."></td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr class="group-head"><th>UTC offset too large</th></tr>
+      <tr><td>2019-03-26T14:00+24:00</td>
+        <td></td>
+        <td data-ref="https://tools.ietf.org/html/rfc3339#section-5.6" title="RFC 3339 §5.6: time-numoffset = (&quot;+&quot; / &quot;-&quot;) time-hour &quot;:&quot; time-minute"></td>
+        <td data-ref="https://ecma-international.org/ecma-262/9.0/#sec-date-time-string-format" title="ECMAScript 2018 §20.3.1.15: **Z** is the time zone offset specified as &quot;Z&quot; (for UTC) or either &quot;+&quot; or &quot;-&quot; followed by a time expression HH:mm"></td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr class="group-head"><th>Unused leap second opportunity</th></tr>
+      <tr><td>2018-06-30T23:59:60Z</td>
+        <td title="ISO 8601:2004(E) §4.2.1: second is represented by two digits from [00] to [60]. The representation of the second by [60] is only allowed to indicate a positive leap second or an instant within that second."></td>
+        <td data-ref="https://tools.ietf.org/html/rfc3339#section-5.7" title="RFC 3339 §5.7: The grammar element time-second may have the value &quot;60&quot; at the end of months in which a leap second occurs"></td>
+        <td data-ref="https://ecma-international.org/ecma-262/9.0/#sec-date-time-string-format" title="ECMAScript 2018 §20.3.1.15: **ss** is the number of complete seconds since the start of the minute as two decimal digits from 00 to 59."></td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr class="group-head"><th>Bogus leap second (not at end of month)</th></tr>
+      <tr><td>2019-03-26T23:59:60Z</td>
+        <td title="ISO 8601:2004(E) §4.2.1: second is represented by two digits from [00] to [60]. The representation of the second by [60] is only allowed to indicate a positive leap second or an instant within that second."></td>
+        <td data-ref="https://tools.ietf.org/html/rfc3339#section-5.7" title="RFC 3339 §5.7: The grammar element time-second may have the value &quot;60&quot; at the end of months in which a leap second occurs"></td>
+        <td data-ref="https://ecma-international.org/ecma-262/9.0/#sec-date-time-string-format" title="ECMAScript 2018 §20.3.1.15: **ss** is the number of complete seconds since the start of the minute as two decimal digits from 00 to 59."></td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr class="group-head"><th>Really bogus leap second (not even at end of UTC day)</th></tr>
+      <tr><td>2019-03-26T13:59:60Z</td>
+        <td title="ISO 8601:2004(E) §4.2.1: second is represented by two digits from [00] to [60]. The representation of the second by [60] is only allowed to indicate a positive leap second or an instant within that second."></td>
+        <td data-ref="https://tools.ietf.org/html/rfc3339#section-5.7" title="RFC 3339 §5.7: The grammar element time-second may have the value &quot;60&quot; at the end of months in which a leap second occurs"></td>
+        <td data-ref="https://ecma-international.org/ecma-262/9.0/#sec-date-time-string-format" title="ECMAScript 2018 §20.3.1.15: **ss** is the number of complete seconds since the start of the minute as two decimal digits from 00 to 59."></td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr class="group-head"><th>Zero UTC offset without time elements</th></tr>
+      <tr><td>2019-03-26Z</td>
+        <td title="ISO 8601:2004(E) §4.2.5.1: Expressions of the difference between local time and UTC of day are a component in the representations defined in 4.2.5.2; they shall not be used as self-standing expressions."></td>
+        <td data-ref="https://tools.ietf.org/html/rfc3339#section-5.6" title="RFC 3339 §5.6: date-time = full-date &quot;T&quot; full-time"></td>
+        <td data-ref="https://ecma-international.org/ecma-262/9.0/#sec-date-time-string-format" title="ECMAScript 2018 §20.3.1.15: This format includes date-only forms… It also includes “date-time” forms that consist of one of the above date-only forms immediately followed by one of the following time forms with an optional time zone offset appended"></td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr class="group-head"><th>Positive UTC offset without time elements</th></tr>
+      <tr><td>2019-03-26+01:00</td>
+        <td title="ISO 8601:2004(E) §4.2.5.1: Expressions of the difference between local time and UTC of day are a component in the representations defined in 4.2.5.2; they shall not be used as self-standing expressions."></td>
+        <td data-ref="https://tools.ietf.org/html/rfc3339#section-5.6" title="RFC 3339 §5.6: date-time = full-date &quot;T&quot; full-time"></td>
+        <td data-ref="https://ecma-international.org/ecma-262/9.0/#sec-date-time-string-format" title="ECMAScript 2018 §20.3.1.15: This format includes date-only forms… It also includes “date-time” forms that consist of one of the above date-only forms immediately followed by one of the following time forms with an optional time zone offset appended"></td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr class="group-head"><th>Negative UTC offset without time elements</th></tr>
+      <tr><td>2019-03-26-04:00</td>
+        <td title="ISO 8601:2004(E) §4.2.5.1: Expressions of the difference between local time and UTC of day are a component in the representations defined in 4.2.5.2; they shall not be used as self-standing expressions."></td>
+        <td data-ref="https://tools.ietf.org/html/rfc3339#section-5.6" title="RFC 3339 §5.6: date-time = full-date &quot;T&quot; full-time"></td>
+        <td data-ref="https://ecma-international.org/ecma-262/9.0/#sec-date-time-string-format" title="ECMAScript 2018 §20.3.1.15: This format includes date-only forms… It also includes “date-time” forms that consist of one of the above date-only forms immediately followed by one of the following time forms with an optional time zone offset appended"></td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr class="group-head"><th>ISO basic format UTC offset</th></tr>
+      <tr><td>2019-03-26T10:00-0400</td>
+        <td title="ISO 8601:2004(E) §4.3.3: the expression shall either be completely in basic format, in which case the minimum number of separators necessary for the required expression is used, or completely in extended format, in which case additional separators shall be used in accordance with 4.1 and 4.2."></td>
+        <td data-ref="https://tools.ietf.org/html/rfc3339#section-5.6" title="RFC 3339 §5.6: time-numoffset = (&quot;+&quot; / &quot;-&quot;) time-hour &quot;:&quot; time-minute"></td>
+        <td data-ref="https://ecma-international.org/ecma-262/9.0/#sec-date-time-string-format" title="ECMAScript 2018 §20.3.1.15: **Z** is the time zone offset specified as &quot;Z&quot; (for UTC) or either &quot;+&quot; or &quot;-&quot; followed by a time expression HH:mm"></td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr class="group-head"><th>Too many expanded year digits</th></tr>
+      <tr><td>+0002019-03-26T14:00Z</td>
+        <td title="ISO 8601:2004(E) §4.1.2.4: If, by agreement, expanded representations are used, the formats shall be as specified below. The interchange parties shall agree the additional number of digits in the time element year."></td>
+        <td data-ref="https://tools.ietf.org/html/rfc3339#section-5.6" title="RFC 3339 §5.6: date-fullyear = 4DIGIT"></td>
+        <td data-ref="https://ecma-international.org/ecma-262/9.0/#sec-extended-years" title="ECMAScript 2018 §20.3.1.15.1: In the simplified ECMAScript format such an expanded year representation shall have 2 extra year digits and is always prefixed with a + or - sign."></td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr class="group-head"><th>Too few expanded year digits</th></tr>
+      <tr><td>+2019-03-26T14:00Z</td>
+        <td title="ISO 8601:2004(E) §4.1.2.4: If, by agreement, expanded representations are used, the formats shall be as specified below. The interchange parties shall agree the additional number of digits in the time element year."></td>
+        <td data-ref="https://tools.ietf.org/html/rfc3339#section-5.6" title="RFC 3339 §5.6: date-fullyear = 4DIGIT"></td>
+        <td data-ref="https://ecma-international.org/ecma-262/9.0/#sec-extended-years" title="ECMAScript 2018 §20.3.1.15.1: In the simplified ECMAScript format such an expanded year representation shall have 2 extra year digits and is always prefixed with a + or - sign."></td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr class="group-head"><th>Too many unsigned year digits</th></tr>
+      <tr><td>002019-03-26T14:00Z</td>
+        <td title="ISO 8601:2004(E) §3.5: By mutual agreement of the partners in information interchange, it is permitted to expand the
+component identifying the calendar year, which is otherwise limited to four digits."></td>
+        <td data-ref="https://tools.ietf.org/html/rfc3339#section-5.6" title="RFC 3339 §5.6: date-fullyear = 4DIGIT"></td>
+        <td data-ref="https://ecma-international.org/ecma-262/9.0/#sec-date-time-string-format" title="ECMAScript 2018 §20.3.1.15: **YYYY** is the decimal digits of the year 0000 to 9999 in the proleptic Gregorian calendar."></td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr class="group-head"><th>Too few unsigned year digits</th></tr>
+      <tr><td>019-03-26T14:00Z</td>
+        <td title="ISO 8601:2004(E) §4.1.2.3: A specific century&#xA;Basic format: YY Example: 19"></td>
+        <td data-ref="https://tools.ietf.org/html/rfc3339#section-5.6" title="RFC 3339 §5.6: date-fullyear = 4DIGIT"></td>
+        <td data-ref="https://ecma-international.org/ecma-262/9.0/#sec-date-time-string-format" title="ECMAScript 2018 §20.3.1.15: **YYYY** is the decimal digits of the year 0000 to 9999 in the proleptic Gregorian calendar."></td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr class="group-head"><th>Non-Z “military” designation letter offset</th></tr>
+      <tr><td>2019-03-26T10:00Q</td>
+        <td title="ISO 8601:2004(E) §4.2.5.1: When it is required to indicate the difference between local time and UTC of day, the representation of the difference can be expressed in hours and minutes, or hours only. It shall be expressed as positive (i.e. with the leading plus sign [ + ]) if the local time is ahead of or equal to UTC of day and as negative (i.e. with the leading minus sign [-]) if it is behind UTC of day."></td>
+        <td data-ref="https://tools.ietf.org/html/rfc3339#section-5.6" title="RFC 3339 §5.6: time-offset = &quot;Z&quot; / time-numoffset"></td>
+        <td data-ref="https://ecma-international.org/ecma-262/9.0/#sec-date-time-string-format" title="ECMAScript 2018 §20.3.1.15: **Z** is the time zone offset specified as &quot;Z&quot; (for UTC) or either &quot;+&quot; or &quot;-&quot; followed by a time expression HH:mm"></td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr class="group-head"><th>Hazardous non-Z “military” designation letter offset</th></tr>
+      <tr><td>2019-03-26T10:00T</td>
+        <td title="ISO 8601:2004(E) §4.2.5.1: When it is required to indicate the difference between local time and UTC of day, the representation of the difference can be expressed in hours and minutes, or hours only. It shall be expressed as positive (i.e. with the leading plus sign [ + ]) if the local time is ahead of or equal to UTC of day and as negative (i.e. with the leading minus sign [-]) if it is behind UTC of day."></td>
+        <td data-ref="https://tools.ietf.org/html/rfc3339#section-5.6" title="RFC 3339 §5.6: time-offset = &quot;Z&quot; / time-numoffset"></td>
+        <td data-ref="https://ecma-international.org/ecma-262/9.0/#sec-date-time-string-format" title="ECMAScript 2018 §20.3.1.15: **Z** is the time zone offset specified as &quot;Z&quot; (for UTC) or either &quot;+&quot; or &quot;-&quot; followed by a time expression HH:mm"></td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr class="group-head"><th>Non-Z “military” designation letter offset without time elements</th></tr>
+      <tr><td>2019-03-26T10:00T</td>
+        <td title="ISO 8601:2004(E) §4.2.5.1: When it is required to indicate the difference between local time and UTC of day, the representation of the difference can be expressed in hours and minutes, or hours only. It shall be expressed as positive (i.e. with the leading plus sign [ + ]) if the local time is ahead of or equal to UTC of day and as negative (i.e. with the leading minus sign [-]) if it is behind UTC of day."></td>
+        <td data-ref="https://tools.ietf.org/html/rfc3339#section-5.6" title="RFC 3339 §5.6: time-offset = &quot;Z&quot; / time-numoffset"></td>
+        <td data-ref="https://ecma-international.org/ecma-262/9.0/#sec-date-time-string-format" title="ECMAScript 2018 §20.3.1.15: **Z** is the time zone offset specified as &quot;Z&quot; (for UTC) or either &quot;+&quot; or &quot;-&quot; followed by a time expression HH:mm"></td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr class="group-head"><th>Hazardous non-Z “military” designation letter offset without time elements</th></tr>
+      <tr><td>2019-03-26T</td>
+        <td title="ISO 8601:2004(E) §4.2.5.1: When it is required to indicate the difference between local time and UTC of day, the representation of the difference can be expressed in hours and minutes, or hours only. It shall be expressed as positive (i.e. with the leading plus sign [ + ]) if the local time is ahead of or equal to UTC of day and as negative (i.e. with the leading minus sign [-]) if it is behind UTC of day."></td>
+        <td data-ref="https://tools.ietf.org/html/rfc3339#section-5.6" title="RFC 3339 §5.6: time-offset = &quot;Z&quot; / time-numoffset"></td>
+        <td data-ref="https://ecma-international.org/ecma-262/9.0/#sec-date-time-string-format" title="ECMAScript 2018 §20.3.1.15: **Z** is the time zone offset specified as &quot;Z&quot; (for UTC) or either &quot;+&quot; or &quot;-&quot; followed by a time expression HH:mm"></td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr class="group-head"><th>Space as time designator</th></tr>
+      <tr><td>2019-03-26 14:00Z</td>
+        <td title="ISO 8601:2004(E) §3.4.1: Unless explicitly allowed by this International Standard the character “space” shall not be used in the
+representations. §4.3.2: By mutual agreement of the partners in information interchange, the character [T] may be omitted in applications where there is no risk of confusing a date and time of day representation with others defined in this International Standard."></td>
+        <td data-ref="https://tools.ietf.org/html/rfc3339#section-5.6" title="RFC 3339 §5.6: date-time = full-date &quot;T&quot; full-time"></td>
+        <td data-ref="https://ecma-international.org/ecma-262/9.0/#sec-date-time-string-format" title="ECMAScript 2018 §20.3.1.15: **T** &quot;T&quot; appears literally in the string, to indicate the beginning of the time element."></td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr class="group-head"><th>No digits after decimal sign</th></tr>
+      <tr><td>2019-03-26T14:00:00.</td>
+        <td title="ISO 8601:2004(E) §4.2.2.4: A decimal fraction shall have at least one digit."></td>
+        <td data-ref="https://tools.ietf.org/html/rfc3339#section-5.6" title="RFC 3339 §5.6: time-secfrac = &quot;.&quot; 1*DIGIT"></td>
+        <td data-ref="https://ecma-international.org/ecma-262/9.0/#sec-date-time-string-format" title="ECMAScript 2018 §20.3.1.15: **sss** is the number of complete milliseconds since the start of the second as three decimal digits."></td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>
