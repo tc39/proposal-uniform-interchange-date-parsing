@@ -18,7 +18,7 @@ It is essentially an ISO 8601-2 [profile](https://dotat.at/tmp/ISO_8601-201x-2-D
 
 This superficially _seems_ to support the desirable developer confidence that any string purported to be an instance of the format will be handled identically by any correct `Date.parse` implementation, but in fact does not because that function is allowed to fall back to implementation-specific behavior for all input that does not strictly conform—even if the divergence was out-of-bounds field values/combinations/etc. ("_Illegal values (out-of-bounds as well as syntax errors) in a format string means that the format string is not a valid instance of this format_").
 As a result, implementations differ in their treatment of such "not-quite right" input in ways that they should not.
-Behavior can be explored at https://jsbin.com/kuyubexitu (approximated [in this repository](jsbin/cases.html)), but here is a summary:
+Behavior can be explored at https://jsbin.com/kuyubexitu (approximated [in this repository](https://tc39.github.io/proposal-uniform-interchange-date-parsing/cases.html)), but here is a summary:
 * Chrome, Edge, and Safari accept signed years with the wrong digit count (e.g., "+2018-06-29" and "+0002018-06-29").
 * Chrome, Edge, and Safari accept unsigned years with more than four digits (e.g., "123456-10-12").
 * Chrome and Edge interpret out-of-bounds days up to 31 (e.g., "2018-02-30") as specifying a date in the following month.
