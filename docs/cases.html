@@ -8,6 +8,8 @@
   <script defer src="cases.js"></script>
 </head>
 <body>
+  <p>This table documents interesting <code>Date.parse</code> test cases, classifies them by conformance (✔) vs. nonconformance (✘) with each of ISO 8601, RFC 3339, and the ECMAScript Date Time String [interchange] Format (including relevant text on hover and direct links where available), and displays the results of attempting to parse a representative example with the host implementation.</p>
+  <p>None of these cases conform to a strict interpretation of the ECMAScript Date Time String Format, and therefore each falls into the implementation-specific behavior of `Date.parse`. An implementation could (and in many cases should) reject them while still remaining compliant with ECMA-262.</p>
   <table class="cases">
     <thead>
       <tr>
