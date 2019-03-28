@@ -1,6 +1,6 @@
 # Uniform parsing of quasi-standard Date.parse input
 
-A proposal to standardize `Date.parse` behavior for a broader range of input, accepting more of RFC 3339 and requiring rejection of input including invalid element combinations or whose digits violate bound, while still allowing implementation-defined fallbacks for _other_ input.
+A proposal to standardize `Date.parse` behavior for a broader range of input, accepting more of RFC 3339 and requiring rejection of input including invalid element combinations or whose digits violate bounds, while still allowing implementation-defined fallbacks for _other_ input.
 
 [2019 March slides](https://docs.google.com/presentation/d/1LuJzeR7Y-e-LcQObQesJfJsIVGkiZCMoZhVMO5OxIoc/edit)
 
