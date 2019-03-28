@@ -2,7 +2,7 @@
 
 A proposal to standardize `Date.parse` behavior for a broader range of input, accepting more of RFC 3339 and requiring rejection of input including invalid element combinations or whose digits violate bounds, while still allowing implementation-defined fallbacks for _other_ input.
 
-[2019 March slides](https://docs.google.com/presentation/d/1LuJzeR7Y-e-LcQObQesJfJsIVGkiZCMoZhVMO5OxIoc/edit)
+[2019-03 slides](https://docs.google.com/presentation/d/1LuJzeR7Y-e-LcQObQesJfJsIVGkiZCMoZhVMO5OxIoc/edit)
 
 ## Status
 This proposal is at stage 1 of [the TC39 Process](https://tc39.github.io/process-document/).
