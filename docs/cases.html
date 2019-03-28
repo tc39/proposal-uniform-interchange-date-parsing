@@ -85,7 +85,7 @@
     <tbody>
       <tr class="group-head"><th>ISO basic format date and time</th></tr>
       <tr class="iso"><td>20190326T1400Z</td>
-        <td title="ISO 8601:2004(E) §2.3.3: **basic format**&#xA;format of a date and time representation or date and time format representation comprising the minimum number of time elements necessary for the precision required&#xA;Note to entry: The basic format should be avoided in plain text.">(↓)</td>
+        <td title="ISO 8601:2004(E) §2.3.3: **basic format**&#xA;format of a date and time representation or date and time format representation comprising the minimum number of time elements necessary for the precision [accuracy] required&#xA;NOTE The basic format should be avoided in plain text.">(↓)</td>
         <td data-ref="https://tools.ietf.org/html/rfc3339#section-5.6" title="RFC 3339 §5.6: full-date = date-fullyear &quot;-&quot; date-month &quot;-&quot; date-mday&#xA;date-time = full-date &quot;T&quot; full-time"></td>
         <td data-ref="https://ecma-international.org/ecma-262/9.0/#sec-date-time-string-format" title="ECMAScript 2018 §20.3.1.15: The format is as follows: YYYY-MM-DDTHH:mm:ss.sssZ"></td>
       </tr>
@@ -102,7 +102,7 @@ consisting of a specific number of calendar days as indicated in Table 1."></td>
     <tbody>
       <tr class="group-head"><th>Time past end of day</th></tr>
       <tr><td>2019-03-25T24:01Z</td>
-        <td title="ISO 8601:2004(E) §4.2.1: **hour** is represented by two digits from [00] to [23]. ([24] shall not be used to represent hour.)"></td>
+        <td title="ISO 8601:2004(E) §4.2.1: **hour** is represented by two digits from [00] to [24]. The representation of the hour by [24] is only allowed to indicate the end of a calendar day, see 4.2.3."></td>
         <td data-ref="https://tools.ietf.org/html/rfc3339#section-5.6" title="RFC 3339 §5.6: time-hour = 2DIGIT ; 00-23"></td>
         <td data-ref="https://ecma-international.org/ecma-262/9.0/#sec-date-time-string-format" title="ECMAScript 2018 §20.3.1.5: As every day both starts and ends with midnight, the two notations 00:00 and 24:00 are available to distinguish the two midnights that can be associated with one date."></td>
       </tr>
@@ -207,7 +207,7 @@ component identifying the calendar year, which is otherwise limited to four digi
     <tbody>
       <tr class="group-head"><th>Non-Z “military” designation letter offset</th></tr>
       <tr><td>2019-03-26T10:00Q</td>
-        <td title="ISO 8601:2004(E) §4.2.5.1: When it is required to indicate the difference between local time and UTC of day, the representation of the difference can be expressed in hours and minutes, or hours only. It shall be expressed as positive (i.e. with the leading plus sign [ + ]) if the local time is ahead of or equal to UTC of day and as negative (i.e. with the leading minus sign [-]) if it is behind UTC of day."></td>
+        <td title="ISO 8601:2004(E) §4.2.5.1: When it is required to indicate the difference between local time and UTC of day, the representation of the difference can be expressed in hours and minutes, or hours only. It shall be expressed as positive (i.e. with the leading plus sign [+]) if the local time is ahead of or equal to UTC of day and as negative (i.e. with the leading minus sign [-]) if it is behind UTC of day."></td>
         <td data-ref="https://tools.ietf.org/html/rfc3339#section-5.6" title="RFC 3339 §5.6: time-offset = &quot;Z&quot; / time-numoffset"></td>
         <td data-ref="https://ecma-international.org/ecma-262/9.0/#sec-date-time-string-format" title="ECMAScript 2018 §20.3.1.15: **Z** is the time zone offset specified as &quot;Z&quot; (for UTC) or either &quot;+&quot; or &quot;-&quot; followed by a time expression HH:mm"></td>
       </tr>
@@ -215,7 +215,7 @@ component identifying the calendar year, which is otherwise limited to four digi
     <tbody>
       <tr class="group-head"><th>Hazardous non-Z “military” designation letter offset</th></tr>
       <tr><td>2019-03-26T10:00T</td>
-        <td title="ISO 8601:2004(E) §4.2.5.1: When it is required to indicate the difference between local time and UTC of day, the representation of the difference can be expressed in hours and minutes, or hours only. It shall be expressed as positive (i.e. with the leading plus sign [ + ]) if the local time is ahead of or equal to UTC of day and as negative (i.e. with the leading minus sign [-]) if it is behind UTC of day."></td>
+        <td title="ISO 8601:2004(E) §4.2.5.1: When it is required to indicate the difference between local time and UTC of day, the representation of the difference can be expressed in hours and minutes, or hours only. It shall be expressed as positive (i.e. with the leading plus sign [+]) if the local time is ahead of or equal to UTC of day and as negative (i.e. with the leading minus sign [-]) if it is behind UTC of day."></td>
         <td data-ref="https://tools.ietf.org/html/rfc3339#section-5.6" title="RFC 3339 §5.6: time-offset = &quot;Z&quot; / time-numoffset"></td>
         <td data-ref="https://ecma-international.org/ecma-262/9.0/#sec-date-time-string-format" title="ECMAScript 2018 §20.3.1.15: **Z** is the time zone offset specified as &quot;Z&quot; (for UTC) or either &quot;+&quot; or &quot;-&quot; followed by a time expression HH:mm"></td>
       </tr>
@@ -223,7 +223,7 @@ component identifying the calendar year, which is otherwise limited to four digi
     <tbody>
       <tr class="group-head"><th>Non-Z “military” designation letter offset without time elements</th></tr>
       <tr><td>2019-03-26T10:00T</td>
-        <td title="ISO 8601:2004(E) §4.2.5.1: When it is required to indicate the difference between local time and UTC of day, the representation of the difference can be expressed in hours and minutes, or hours only. It shall be expressed as positive (i.e. with the leading plus sign [ + ]) if the local time is ahead of or equal to UTC of day and as negative (i.e. with the leading minus sign [-]) if it is behind UTC of day."></td>
+        <td title="ISO 8601:2004(E) §4.2.5.1: When it is required to indicate the difference between local time and UTC of day, the representation of the difference can be expressed in hours and minutes, or hours only. It shall be expressed as positive (i.e. with the leading plus sign [+]) if the local time is ahead of or equal to UTC of day and as negative (i.e. with the leading minus sign [-]) if it is behind UTC of day."></td>
         <td data-ref="https://tools.ietf.org/html/rfc3339#section-5.6" title="RFC 3339 §5.6: time-offset = &quot;Z&quot; / time-numoffset"></td>
         <td data-ref="https://ecma-international.org/ecma-262/9.0/#sec-date-time-string-format" title="ECMAScript 2018 §20.3.1.15: **Z** is the time zone offset specified as &quot;Z&quot; (for UTC) or either &quot;+&quot; or &quot;-&quot; followed by a time expression HH:mm"></td>
       </tr>
@@ -231,7 +231,7 @@ component identifying the calendar year, which is otherwise limited to four digi
     <tbody>
       <tr class="group-head"><th>Hazardous non-Z “military” designation letter offset without time elements</th></tr>
       <tr><td>2019-03-26T</td>
-        <td title="ISO 8601:2004(E) §4.2.5.1: When it is required to indicate the difference between local time and UTC of day, the representation of the difference can be expressed in hours and minutes, or hours only. It shall be expressed as positive (i.e. with the leading plus sign [ + ]) if the local time is ahead of or equal to UTC of day and as negative (i.e. with the leading minus sign [-]) if it is behind UTC of day."></td>
+        <td title="ISO 8601:2004(E) §4.2.5.1: When it is required to indicate the difference between local time and UTC of day, the representation of the difference can be expressed in hours and minutes, or hours only. It shall be expressed as positive (i.e. with the leading plus sign [+]) if the local time is ahead of or equal to UTC of day and as negative (i.e. with the leading minus sign [-]) if it is behind UTC of day."></td>
         <td data-ref="https://tools.ietf.org/html/rfc3339#section-5.6" title="RFC 3339 §5.6: time-offset = &quot;Z&quot; / time-numoffset"></td>
         <td data-ref="https://ecma-international.org/ecma-262/9.0/#sec-date-time-string-format" title="ECMAScript 2018 §20.3.1.15: **Z** is the time zone offset specified as &quot;Z&quot; (for UTC) or either &quot;+&quot; or &quot;-&quot; followed by a time expression HH:mm"></td>
       </tr>
