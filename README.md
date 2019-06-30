@@ -25,7 +25,7 @@ Behavior can be explored at https://jsbin.com/kuyubexitu (approximated [in this 
 * Chrome accepts lowercase time designators and/or time zone offsets (e.g., "2018-06-29t15:00z").
 * Edge accepts nonzero minutes and/or seconds when the hour is 24 (e.g., "2018-06-28T24:01:01Z").
 * Safari accepts a seconds value of 60 (e.g., "2015-06-30T23:59:60Z"), interpreted as end-of-minute.
-* Chrome and Edge accept "Z" offsets in the absense of a time component. Edge further accepts other letters (e.g., "2018-06-29E"), interpreted as [military time zones](https://en.wikipedia.org/wiki/List_of_military_time_zones).
+* Chrome and Edge accept "Z" offsets in the absence of a time component. Edge further accepts other letters (e.g., "2018-06-29E"), interpreted as [military time zones](https://en.wikipedia.org/wiki/List_of_military_time_zones).
 * Edge accepts hh:mm time zone offsets in the absense of a time component (e.g., "2018-06-29-04:00").
 * Edge accepts hours-only time zone offsets, but only with a fully-specified date component (e.g., "2018-06-29T11:00-04").
 * Edge and Safari accept out-of-bounds time zone offsets (e.g., "2018-06-28T15:00-24:00").
