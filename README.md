@@ -26,12 +26,12 @@ Behavior can be explored at https://jsbin.com/kuyubexitu (approximated [in this 
 * Edge accepts nonzero minutes and/or seconds when the hour is 24 (e.g., "2018-06-28T24:01:01Z").
 * Safari accepts a seconds value of 60 (e.g., "2015-06-30T23:59:60Z"), interpreted as end-of-minute.
 * Chrome and Edge accept "Z" offsets in the absence of a time component. Edge further accepts other letters (e.g., "2018-06-29E"), interpreted as [military time zones](https://en.wikipedia.org/wiki/List_of_military_time_zones).
-* Edge accepts hh:mm time zone offsets in the absense of a time component (e.g., "2018-06-29-04:00").
+* Edge accepts hh:mm time zone offsets in the absence of a time component (e.g., "2018-06-29-04:00").
 * Edge accepts hours-only time zone offsets, but only with a fully-specified date component (e.g., "2018-06-29T11:00-04").
 * Edge and Safari accept out-of-bounds time zone offsets (e.g., "2018-06-28T15:00-24:00").
 * Chrome, Edge, Firefox, and Safari accept too few or too many fractional second digits (e.g., "2018-06-29T11:00:12.3456").
 
-In short, developers can only trust `Date.parse` after theirselves going through cumbersome and error-prone validation of input against the interchange format—which undermines the benefit of using `Date.parse` in the first place!
+In short, developers can only trust `Date.parse` after themselves going through cumbersome and error-prone validation of input against the interchange format—which undermines the benefit of using `Date.parse` in the first place!
 
 ## Proposed Solution
 Update `Date.parse` to check input against a format that encompasses both the current [Date Time String Format](https://tc39.github.io/ecma262/#sec-date-time-string-format) and small variations therefrom—especially those that are valid [ISO 8601 date and time representations](https://dotat.at/tmp/ISO_8601-2004_E.pdf) and standardize treatment of input conforming to it before falling back on implementation-defined behavior.
