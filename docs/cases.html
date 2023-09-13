@@ -45,6 +45,22 @@
       </tr>
     </tbody>
     <tbody>
+      <tr class="group-head"><th>Too many fractional second digits (pre-epoch)</th></tr>
+      <tr class="iso rfc"><td>1969-03-26T14:00:00.4999Z</td>
+        <td title="ISO 8601:2004(E) §4.2.2.4: The interchange parties, dependent upon the application, shall agree the number of digits in the decimal fraction. The format shall be [hhmmss,ss], [hhmm,mm] or [hh,hh] as appropriate (hour minute second, hour minute, and hour, respectively), with as many digits as necessary following the decimal sign."></td>
+        <td data-ref="https://tools.ietf.org/html/rfc3339#section-5.6" title="RFC 3339 §5.6: time-secfrac = &quot;.&quot; 1*DIGIT"></td>
+        <td data-ref="https://ecma-international.org/ecma-262/9.0/#sec-date-time-string-format" title="ECMAScript 2018 §20.3.1.15: **sss** is the number of complete milliseconds since the start of the second as three decimal digits."></td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr class="group-head"><th>Too many fractional second digits (BCE)</th></tr>
+      <tr class="iso rfc"><td>-000043-03-15T14:00:00.4999Z1969-03-26T14:00:00.4999Z</td>
+        <td title="ISO 8601:2004(E) §4.2.2.4: The interchange parties, dependent upon the application, shall agree the number of digits in the decimal fraction. The format shall be [hhmmss,ss], [hhmm,mm] or [hh,hh] as appropriate (hour minute second, hour minute, and hour, respectively), with as many digits as necessary following the decimal sign."></td>
+        <td data-ref="https://tools.ietf.org/html/rfc3339#section-5.6" title="RFC 3339 §5.6: time-secfrac = &quot;.&quot; 1*DIGIT"></td>
+        <td data-ref="https://ecma-international.org/ecma-262/9.0/#sec-date-time-string-format" title="ECMAScript 2018 §20.3.1.15: **sss** is the number of complete milliseconds since the start of the second as three decimal digits."></td>
+      </tr>
+    </tbody>
+    <tbody>
       <tr class="group-head"><th>Lowercase time designator</th></tr>
       <tr class="iso rfc"><td>2019-03-26t14:00Z</td>
         <td title="ISO 8601:2004(E) §3.4.1: In date and time representations lower case characters may be used when upper case characters are not available."></td>
